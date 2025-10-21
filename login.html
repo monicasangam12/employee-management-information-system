@@ -1,13 +1,17 @@
 <form method="post" [formGroup]="loginForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" formControlName="username" required>
     <br>
     <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" formControlName="password" required>
+    <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput type="text"  formControlName="username" required>
+    </mat-form-field>
     <br>
     <br>
-    <button (click)="loginEmployee()" type="submit">Login</button>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password"  formControlName="password" required>
+    </mat-form-field>
     <br>
     <br>
+    <button matButton (click)="loginEmployee()">Login</button>
 </form>
