@@ -1,0 +1,32 @@
+<html>
+    <div>
+        <h1>Employees Details List</h1>
+    </div>
+    <article class="table-header">
+        <button class="button-add-row" mat-button (click)="addRowButtonHandler(formMode)">Add Row</button>
+        <button class="button-edit-row" mat-button (click)="editRowButtonHandler(formMode)">Edit Row</button>
+        <button class="button-delete-row" mat-button (click)="deleteRowButtonHandler(formMode)">Delete Row</button>
+        <input class="search-box" placeholder="Search Employee" [(ngModel)]="searchText" (ngModelChange)="searchEmployeeByText()" />
+        <button><input class="filter-box" placeholder="Filter by Position" type="text" [(ngModel)]="filterPosition" (ngModelChange)="filterEmployeeByPosition()" />Filter Employee by position</button>
+    </article>
+   <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns;index as i">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span *ngIf="columnsSchema[i].key != 'id'">
+                {{col}}
+            </span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <div *ngIf="columnsSchema[i].key == 'isEdit'">
+                <input type="checkbox" [checked]="element[col]"  (click)="checkedOrUnchecked(element)" />
+            </div>
+            <div *ngIf="columnsSchema[i].key != 'id' && columnsSchema[i].key != 'isEdit'">
+                {{element[col]}}
+            </div>
+        </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</html>

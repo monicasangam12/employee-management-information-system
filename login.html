@@ -1,0 +1,13 @@
+<form method="post" [formGroup]="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" formControlName="username" required>
+    <br>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" formControlName="password" required>
+    <br>
+    <br>
+    <button (click)="loginEmployee()" type="submit">Login</button>
+    <br>
+    <br>
+</form>
