@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmployeeService } from '../employee-service';
 import { Router } from '@angular/router';
 import { ACTION, StateMachineService } from '../app.statemachine';
@@ -10,20 +10,20 @@ import { MatInput } from "@angular/material/input";
 @Component({
   selector: 'app-login',
   imports: [HttpClientModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInput],
-  templateUrl: './login.html',
-  styleUrl: './login.css'
+  template: './login.html',
+  styles: './login.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, AfterViewInit {
   loginForm!: FormGroup;
   username: string = '';
   password: string = '';
   employeeData!: EmployeeService;
 
   ACTION_Local = ACTION;
+  @Inject("stateMachineService") stateMachineService!: StateMachineService;
+  @Inject("router") router!: Router;
 
-  constructor(httpClient: HttpClient, private fb: FormBuilder, private router: Router,
-    @Inject(StateMachineService) private stateMachineService: StateMachineService
-  ) {
+  constructor(@Inject("httpClient") httpClient: HttpClient ) {
 
     this.loginForm = new FormGroup({
       username: new FormControl('', Validators.required),
@@ -34,14 +34,13 @@ export class LoginComponent {
 
     this.employeeData = new EmployeeService(httpClient);
 
-    // this.employeeData.getEmployeeDetails({id: 1, name: "Jane Smith", position: "Javascript Programmer", username: "janesmith", password: "lovingsmallkittens", salary: 110000});
-    // this.employeeData.getEmployeeById(1);
-    // this.employeeData.postEmployeeDetails({id: 1, name: "John Doe", position: "UI Developer"});
-    // this.employeeData.updateEmployeeDetails(1, { name: 'Jane Smith', position: 'Senior Developer' });
-    // this.employeeData.deleteEmployee(1);
   }
 
-  ngAfterViewInit(){
+  ngOnInit() {
+    
+  }
+
+   ngAfterViewInit(){
     console.log("LoginComponent View Initialized");
 
     this.stateMachineService.getCurrentState();
@@ -57,7 +56,6 @@ export class LoginComponent {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
     })
-
   }
 
   go(event:any){
@@ -75,13 +73,11 @@ export class LoginComponent {
       if (this.loginForm.value.username == "johndoe") {
         console.log("Login Successful");
         console.log(this.username + " logged in.");
-
         this.router.navigateByUrl("employees");
         console.log("Navigation successful");
-       
-      } else {
-      
-        console.log("Invalid credentials");
       }
+       else {
+        console.log("Invalid credentials");
+       }
     }
-  }
+}
