@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppFilterPipe } from '../../filter.pipe';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { ACTION, StateMachineService } from '../app.statemachine';
 
 
 const COLUMNS_SCHEMA = [
@@ -106,10 +107,13 @@ export class EmployeesComponent {
   event!: EventEmitter<Employee>;
 
   filterPosition: any;
+  ACTION_Local = ACTION;
 
   //Lifecycle Event
 
-  constructor(private employeeService: EmployeeService, private router: Router)  {
+  constructor(private employeeService: EmployeeService, private router: Router,
+    private stateMachineService: StateMachineService
+  )  {
     this.refreshTable();
   }
 
@@ -124,6 +128,25 @@ export class EmployeesComponent {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.dataSource.filterPredicate = (data: Employee, filter: string) => {
+      return data.name.toLowerCase().includes(filter);
+     }
+
+     this.stateMachineService.getCurrentState();
+     
+   const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
+    allActions.forEach(action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = true;
+    })
+    
+    const pageActions:ACTION[] = this.stateMachineService.getPageActions();
+    pageActions.forEach( action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
+    })
+
   }
 
   refreshTable() {
@@ -159,6 +182,13 @@ export class EmployeesComponent {
       console.log("Checked Rows:", this.selection.selected);
     }
   }
+
+   go(event:any){
+    const url = this.stateMachineService.getNextState(event.target.id)
+    console.log("Navigating to URL:", url);
+    if (url)this.router.navigateByUrl(url);
+    
+   }
 
   addRowButtonHandler(formMode:FORM_MODE){
       if(formMode==FORM_MODE.Add){

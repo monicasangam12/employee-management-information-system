@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../employee-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ACTION, StateMachineService } from '../app.statemachine';
 
 
 @Component({
@@ -19,24 +20,28 @@ export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   router: Router = new Router;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private employeeService: EmployeeService){
-    this.employeeForm = this.fb.group({
-      id: [''],
-      name: [''],
-      email: [''],
-      username: [''],
-      password: [''],
-      position: [''],
-      salary: [''],
-      rating: ['']
-    });     
+  ACTION_Local = ACTION;
+
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private employeeService: EmployeeService,
+    @Inject(StateMachineService)private stateMachineService: StateMachineService
+  ){
+    this.employeeForm = new FormGroup({
+      id: this.fb.control(0),
+      name: this.fb.control(''),
+      email: this.fb.control(''),
+      position: this.fb.control(''),
+      salary: this.fb.control(0),
+      username: this.fb.control(''),
+      password: this.fb.control(''),
+      rating: this.fb.control(0),
+    });
+    console.log("Add Employee Form Initialized", this.employeeForm.value);
+    this.router = new Router;
   }
 
   ngOnInit() {
-
     this.route.paramMap.subscribe(params => {
           const id = params.get('id');
-
           let employeeId:number = Number(id);
           console.log("employeeId = "+ employeeId);
           if(employeeId==0) {
@@ -46,6 +51,34 @@ export class AddEmployeeComponent implements OnInit {
             this.editEmployee(employeeId);
           }
     });
+  }
+
+  ngAfterViewInit(){
+    console.log("AddEmployeeComponent View Initialized");
+
+    this.stateMachineService.getCurrentState();
+
+    const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
+    allActions.forEach(action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = true;
+    })
+    
+    const pageActions:ACTION[] = this.stateMachineService.getPageActions();
+    pageActions.forEach( action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
+    })
+    
+  }
+
+  go(event:any){
+    const url = '';
+    if (event.target.id === this.ACTION_Local.GO_ADD) {
+      this.onSubmit();
+      console.log("Add Employee button clicked");
+    }
+    if (url)this.router.navigateByUrl(url);
   }
 
   addEmployee(employeeId:number){ 

@@ -3,11 +3,11 @@
         <h1>Employees Details List</h1>
     </div>
     <article class="table-header">
-        <button class="button-add-row" mat-button (click)="addRowButtonHandler(formMode)">Add Row</button>
-        <button class="button-edit-row" mat-button (click)="editRowButtonHandler(formMode)">Edit Row</button>
-        <button class="button-delete-row" mat-button (click)="deleteRowButtonHandler(formMode)">Delete Row</button>
-        <input class="search-box" placeholder="Search Employee" [(ngModel)]="searchText" (ngModelChange)="searchEmployeeByText()" />
-        <button><input class="filter-box" placeholder="Filter by Position" type="text" [(ngModel)]="filterPosition" (ngModelChange)="filterEmployeeByPosition()" />Filter Employee by position</button>
+        <button class="button-add-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_ADD}}">Add Row</button>
+        <button class="button-edit-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_EDIT}}">Edit Row</button>
+        <button class="button-delete-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_DELETE}}">Delete Row</button>
+        <button class="button-search-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_SEARCH}}">Search Row</button>
+        <button class="button-filter-row" mat-button (click)="go($event)" id="{{ACTION_Local.SUBMIT_FILTER}}">Filter Employees</button>
     </article>
    <table mat-table [dataSource]="dataSource" matSort>
         <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns;index as i">

@@ -1,8 +1,9 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmployeeService } from '../employee-service';
 import { Router } from '@angular/router';
+import { ACTION, StateMachineService } from '../app.statemachine';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,11 @@ export class LoginComponent {
   password: string = '';
   employeeData!: EmployeeService;
 
-  constructor(httpClient: HttpClient, private fb: FormBuilder, private router: Router) {
+  ACTION_Local = ACTION;
+
+  constructor(httpClient: HttpClient, private fb: FormBuilder, private router: Router,
+    @Inject(StateMachineService) private stateMachineService: StateMachineService
+  ) {
 
     this.loginForm = this.fb.group({
        username: ['', Validators.required],
@@ -32,6 +37,34 @@ export class LoginComponent {
     // this.employeeData.postEmployeeDetails({id: 1, name: "John Doe", position: "UI Developer"});
     // this.employeeData.updateEmployeeDetails(1, { name: 'Jane Smith', position: 'Senior Developer' });
     // this.employeeData.deleteEmployee(1);
+  }
+
+  ngAfterViewInit(){
+    console.log("LoginComponent View Initialized");
+
+    this.stateMachineService.getCurrentState();
+
+    const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
+    allActions.forEach(action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = true;
+    })
+    
+    const pageActions:ACTION[] = this.stateMachineService.getPageActions();
+    pageActions.forEach( action => {
+      if((document.getElementById(''+action) as HTMLButtonElement)!=null)
+        (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
+    })
+
+  }
+
+  go(event:any){
+    const url = '';
+    if (event.target.id === this.ACTION_Local.GO_LOGIN) {
+      this.loginEmployee();
+      console.log("Login button clicked");
+    }
+    if (url)this.router.navigateByUrl(url);
   }
 
   loginEmployee(){
