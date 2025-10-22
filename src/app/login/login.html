@@ -1,13 +1,15 @@
 <form method="post" [formGroup]="loginForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" formControlName="username" required>
+    <mat-form-field>
+        <mat-label>UserName</mat-label>
+        <input matInput type="text" formControlName="userName">
+    </mat-form-field>
     <br>
     <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" formControlName="password" required>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password">
+    </mat-form-field>
     <br>
     <br>
-    <button id="{{ACTION_Local.GO_LOGIN}}" (click)="go($event)" type="submit">Login</button>
-    <br>
-    <br>
+    <button id="{{ACTION_Local.GO_LOGIN}}" matButton (click)="go($event)" type="submit">Login</button>
 </form>

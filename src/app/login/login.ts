@@ -1,13 +1,15 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmployeeService } from '../employee-service';
 import { Router } from '@angular/router';
 import { ACTION, StateMachineService } from '../app.statemachine';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from "@angular/material/input";
 
 @Component({
   selector: 'app-login',
-  imports: [HttpClientModule, FormsModule, ReactiveFormsModule],
+  imports: [HttpClientModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInput],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -23,12 +25,12 @@ export class LoginComponent {
     @Inject(StateMachineService) private stateMachineService: StateMachineService
   ) {
 
-    this.loginForm = this.fb.group({
-       username: ['', Validators.required],
-       password: ['', Validators.required]
+    this.loginForm = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.pattern('*')])
     });
 
-    console.log(this.loginForm.value.username);
+    console.log("Login Form Initialized: ", this.loginForm.value);
 
     this.employeeData = new EmployeeService(httpClient);
 

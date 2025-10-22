@@ -5,11 +5,14 @@ import { EmployeeService } from '../employee-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ACTION, StateMachineService } from '../app.statemachine';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from "@angular/material/select";
 
 
 @Component({
   selector: 'app-add-employee',
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, HttpClientModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, HttpClientModule, MatFormFieldModule, MatInputModule, MatSelectModule],
   standalone: true,
   providers: [EmployeeService],
   templateUrl: './add-employee.html',
