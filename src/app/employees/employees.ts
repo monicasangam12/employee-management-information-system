@@ -12,9 +12,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppFilterPipe } from '../../filter.pipe';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ACTION, StateMachineService } from '../app.statemachine';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 const COLUMNS_SCHEMA = [
@@ -76,12 +76,15 @@ export enum FORM_MODE {
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [CommonModule, MatInputModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, FormsModule, HttpClientModule, MatSortModule],
+  imports: [CommonModule, MatInputModule, MatTableModule, MatPaginatorModule,
+     MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, 
+     FormsModule, HttpClientModule, MatSortModule, MatButtonToggleModule],
   providers: [EmployeeService],
   templateUrl: './employees.html',
   styleUrl: './employees.css'
 })
 export class EmployeesComponent {
+
 // appFilter.transform(this.employees, "vi", "name");
 
   //Table Definition
@@ -101,7 +104,7 @@ export class EmployeesComponent {
   formModeEnum = FORM_MODE;
   searchText!: string;
   employees: Employee[] = [];
-  appFilter: AppFilterPipe = new AppFilterPipe;
+  //appFilter: AppFilterPipe = new AppFilterPipe;
 
   formMode!: FORM_MODE;
   event!: EventEmitter<Employee>;
@@ -118,7 +121,6 @@ export class EmployeesComponent {
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
 
      this.dataSource.filterPredicate = (data: Employee, filter: string) => {
       return data.name.toLowerCase().includes(filter);
@@ -133,7 +135,8 @@ export class EmployeesComponent {
       return data.name.toLowerCase().includes(filter);
      }
 
-     this.stateMachineService.getCurrentState();
+     let employeeId = this.stateMachineService.getCurrentState();
+     console.log("Current State: ", employeeId);
      
    const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
     allActions.forEach(action => {
@@ -165,10 +168,11 @@ export class EmployeesComponent {
     // appFilter.transform(this.employees, "vi", "name");
   }
 
-  filterEmployeeByPosition() {
-    this.appFilter.transform(this.employees, this.filterPosition, "position");
-    console.log("Filtered Employees by Position:", this.dataSource.data);
-    return this.dataSource;
+  applyFilter(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource.filter);
+    console.log(filterValue);
   }
 
   //Event Handlers
@@ -186,9 +190,27 @@ export class EmployeesComponent {
    go(event:any){
     const url = this.stateMachineService.getNextState(event.target.id)
     console.log("Navigating to URL:", url);
-    if (url)this.router.navigateByUrl(url);
+    if (url == "/add-employee/" || url?.startsWith("/add-employee/"))
+           this.addRowButtonHandler(this.formModeEnum.Add);
+    else if (url == "")
+      this.deleteRowButtonHandler(this.formModeEnum.Delete);
+    else
+      this.editRowButtonHandler(this.formModeEnum.Edit);
     
+    if (url)this.router.navigateByUrl(url);
    }
+
+  onToggleChange() {
+    const selectedValue = this.employees;
+    console.log("Selected View Mode:", selectedValue);
+   if (selectedValue) {
+      viewAddMode: this.dataSource.data = this.employees.filter(emp => emp.username.length >= 4);
+      console.log("Filtered Employees with username length >=4:", this.dataSource.data);
+    } else {
+      viewAllMode: this.refreshTable();
+      console.log("All Employees View Mode:", this.dataSource.data);
+    }
+  }
 
   addRowButtonHandler(formMode:FORM_MODE){
       if(formMode==FORM_MODE.Add){
@@ -231,13 +253,6 @@ export class EmployeesComponent {
       else
         console.log("no selection")
     }
-  }
-
-  applyFilter(event: Event){
-     const filterValue = (event.target as unknown as HTMLInputElement).value;
-     this.dataSource.filter = filterValue.trim().toLowerCase();
-     console.log(this.dataSource.filter);
-     console.log(filterValue);
   }
 
 }
