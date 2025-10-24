@@ -1,20 +1,21 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeService } from '../employee-service';
-import { Router } from '@angular/router';
 import { ACTION, StateMachineService } from '../app.statemachine';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInput } from "@angular/material/input";
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
-  imports: [HttpClientModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInput],
-  template: './login.html',
-  styles: './login.css'
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, HttpClientModule, MatInputModule],
+  providers: [EmployeeService],
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
 })
 export class LoginComponent implements OnInit, AfterViewInit {
-  loginForm!: FormGroup;
+ loginForm!: FormGroup;
   username: string = '';
   password: string = '';
   employeeData!: EmployeeService;
@@ -23,26 +24,29 @@ export class LoginComponent implements OnInit, AfterViewInit {
   @Inject("stateMachineService") stateMachineService!: StateMachineService;
   @Inject("router") router!: Router;
 
-  constructor(@Inject("httpClient") httpClient: HttpClient ) {
+  constructor(private httpClient: HttpClient, private employeeService: EmployeeService) {
 
-    this.loginForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.pattern('*')])
-    });
-
-    console.log("Login Form Initialized: ", this.loginForm.value);
+    this.httpClient = httpClient;
 
     this.employeeData = new EmployeeService(httpClient);
 
   }
 
   ngOnInit() {
-    
+    this.loginForm = new FormGroup({
+      userName: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
+
+      console.log("Login Form Initialized: ", this.loginForm.value);
+
+
   }
 
    ngAfterViewInit(){
     console.log("LoginComponent View Initialized");
 
+    //console.log("Current State: ", this.stateMachineService.getCurrentState());
     this.stateMachineService.getCurrentState();
 
     const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
@@ -50,12 +54,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = true;
     })
+    console.log("All Actions Disabled");
     
     const pageActions:ACTION[] = this.stateMachineService.getPageActions();
     pageActions.forEach( action => {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
     })
+    console.log("Page Actions Enabled");
   }
 
   go(event:any){
@@ -68,9 +74,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   loginEmployee(){
-    // this.employeeData.getEmployeeDetails({id: 1, name: "Jane Smith", position: "Javascript Programmer", username: "janesmith", password: "lovingsmallkittens", salary: 110000});
-    //   const user = this.employeeData.getEmployeeById(1);
-      if (this.loginForm.value.username == "johndoe") {
+    this.employeeData.findAll().subscribe(employees => {
+     employees = this.employeeData.getById(1);
+     console.log("Employees fetched: ", employees);
+    });
+       const user = this.employeeData.getById(1);
+      if (this.loginForm.value.userName == "johndoe") {
         console.log("Login Successful");
         console.log(this.username + " logged in.");
         this.router.navigateByUrl("employees");
