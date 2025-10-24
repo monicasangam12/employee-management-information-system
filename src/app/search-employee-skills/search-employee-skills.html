@@ -1,4 +1,8 @@
-<div>
-    <h2>Search Employees by Skill</h2>
-    <input type="text" [(ngModel)]="searchText" placeholder="Enter skill to search" (input)="onSearch($event)" />
-</div>
+<mat-form-field> 
+            <mat-select placeholder="Search by skill" [formControl]="skillsControl">
+                <mat-option *ngFor="let skill of skillsList"
+                            [value]="skill"
+                            (click)="searchSkills(skill)">{{skill}}
+                </mat-option>
+            </mat-select>
+    </mat-form-field>
