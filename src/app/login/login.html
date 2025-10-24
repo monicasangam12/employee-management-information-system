@@ -1,15 +1,19 @@
-<form method="post" [formGroup]="loginForm">
-    <mat-form-field>
-        <mat-label>UserName</mat-label>
-        <input matInput type="text" formControlName="userName">
-    </mat-form-field>
-    <br>
-    <br>
-    <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password">
-    </mat-form-field>
-    <br>
-    <br>
-    <button id="{{ACTION_Local.GO_LOGIN}}" matButton (click)="go($event)" type="submit">Login</button>
-</form>
+<div>
+    <h1>Login Page</h1>
+    <form method="post" [formGroup]="loginForm">
+        <mat-form-field>
+            <mat-label>UserName</mat-label>
+            <input matInput type="text" formControlName="userName">
+        </mat-form-field>
+        <br>
+        <br>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+        </mat-form-field>
+        <br>
+        <br>
+        <!-- <button id="{{ACTION_Local.GO_LOGIN}}" matButton (click)="go($event)" type="submit">Login</button> -->
+        <button matButton (click)="loginEmployee()" type="submit">Login</button>
+    </form>
+</div>
