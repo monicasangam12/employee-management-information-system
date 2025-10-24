@@ -196,7 +196,7 @@ export class EmployeesComponent {
       this.deleteRowButtonHandler(this.formModeEnum.Delete);
     else if (url == "edit/${id}")
       this.editRowButtonHandler(this.formModeEnum.Edit);
-    else if (url == "add-employee")
+    else if (url == "add-employee/{id}")
       this.router.navigateByUrl(url);
       console.log("Navigating to URL:", "add-employee");
 
