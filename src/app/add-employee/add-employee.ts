@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmployeeService } from '../employee-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,14 +29,14 @@ export class AddEmployeeComponent implements OnInit {
     @Inject(StateMachineService)private stateMachineService: StateMachineService
   ){
     this.employeeForm = new FormGroup({
-      id: this.fb.control(0),
-      name: this.fb.control(''),
-      email: this.fb.control(''),
-      position: this.fb.control(''),
-      salary: this.fb.control(0),
-      username: this.fb.control(''),
-      password: this.fb.control(''),
-      rating: this.fb.control(0),
+      id: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      position: new FormControl('', Validators.required),
+      salary: new FormControl('', [Validators.required, Validators.min(0)]),
+      userName: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      rating: new FormControl('', [Validators.required, Validators.min(1), Validators.max(5)]),
     });
     console.log("Add Employee Form Initialized", this.employeeForm.value);
     this.router = new Router;
@@ -59,7 +59,8 @@ export class AddEmployeeComponent implements OnInit {
   ngAfterViewInit(){
     console.log("AddEmployeeComponent View Initialized");
 
-    this.stateMachineService.getCurrentState();
+    let employeeId = this.stateMachineService.getCurrentState();
+    console.log("Current State: ", employeeId);
 
     const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
     allActions.forEach(action => {
@@ -111,6 +112,10 @@ export class AddEmployeeComponent implements OnInit {
 
   }
   onSubmit(){
+
+      this.employeeService.create(this.employeeForm.value);
+      console.log("Employee Form Submitted", this.employeeForm.value);
+
       if(this.employeeForm.valid){
         console.log("Form Submitted Successfully value",this.employeeForm.value);
         console.log("Form Submitted Successfully id",this.employeeForm.value.id);
