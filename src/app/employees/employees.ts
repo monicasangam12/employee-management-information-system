@@ -189,15 +189,18 @@ export class EmployeesComponent {
 
    go(event:any){
     const url = this.stateMachineService.getNextState(event.target.id)
-    console.log("Navigating to URL:", url);
-    if (url == "/add-employee/" || url?.startsWith("/add-employee/"))
-           this.addRowButtonHandler(this.formModeEnum.Add);
-    else if (url == "")
+    console.log("Navigating to URL:", "employees");
+    if (url == "search-employee-skills")
+           this.searchEmployeeByText();
+    else if (url == "delete/${id}")
       this.deleteRowButtonHandler(this.formModeEnum.Delete);
-    else
+    else if (url == "edit/${id}")
       this.editRowButtonHandler(this.formModeEnum.Edit);
-    
-    if (url)this.router.navigateByUrl(url);
+    else if (url == "add-employee")
+      this.router.navigateByUrl(url);
+      console.log("Navigating to URL:", "add-employee");
+
+    if (url)this.router.navigateByUrl("add-employee");
    }
 
   onToggleChange() {
