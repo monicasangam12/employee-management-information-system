@@ -1,33 +1,35 @@
 <html>
     <div>
-        <h1>Add Employee</h1>
+        <h1 style="margin-left: 25%;">Add Employee</h1>
+        <br>
+        <br>
         <form method="post" [formGroup]="employeeForm">
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Name</mat-label>
                 <input matInput type="text" formControlName="name">
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Email</mat-label>
                 <input matInput type="text" formControlName="email">
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Username</mat-label>
                 <input matInput type="text" formControlName="userName">
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password">
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Position</mat-label>
                 <input matInput type="text" formControlName="position">
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Rating</mat-label>
                 <mat-select>
                     <mat-option>Choose a rating</mat-option>
@@ -44,13 +46,13 @@
                 </mat-select>
             </mat-form-field>
             <br><br>
-            <mat-form-field>
+            <mat-form-field style="margin-left: 25%;">
                 <mat-label>Salary</mat-label>
                 <input matInput type="number" formControlName="salary">
             </mat-form-field>
             <br><br>
             <!--<button id="{{ACTION_Local.GO_ADD}}" (click)="go($event)" type="submit">Add Employee</button>-->
-            <button (click)="onSubmit()" type="submit">Add Employee</button>
+            <button style="margin-left: 25%;" (click)="onSubmit()" type="submit">Add Employee</button>
             <br><br>
         </form>
     </div>
