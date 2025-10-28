@@ -1,26 +1,30 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
-import { MatOptionModule } from '@angular/material/core';
-import { MatFormField } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../employee-service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-search-employee-skills',
-  imports: [MatFormField, MatSelectModule, MatOptionModule, ReactiveFormsModule, FormsModule],
+  imports: [FormsModule],
+  providers: [HttpClient, EmployeeService],
+  standalone: true,
   templateUrl: './search-employee-skills.html',
-  styleUrls: ['./search-employee-skills.css'],
+  styleUrl: './search-employee-skills.css'
 })
 export class SearchEmployeeSkillsComponent {
-  skillsControl = new FormControl('');
-  skillsList: string[] = ['Java', 'Angular', 'Python', 'C#', 'SQL', 'AWS'];
+  searchText: string = '';
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: EmployeeService) {
+    this.employeeService = employeeService;
+  }
 
-  searchSkills(skill: string) {
-    console.log("Searching employees with skill: ", skill);
-    this.employeeService.findBySearchText(skill).subscribe((results: any) => {
-      console.log("Search results: ", results);
+  onSearch(event: any) {
+    const query = event.target.value.toLowerCase();
+    console.log('Searching for employees with skill:', query);
+
+    this.employeeService.findBySearchText(query).subscribe((results) => {
+      console.log('Search results:', results);
     });
   }
+
 }
