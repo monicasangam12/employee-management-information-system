@@ -1,92 +1,70 @@
+
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmployeeService } from '../employee-service';
-import { ACTION, StateMachineService } from '../app.statemachine';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ACTION, StateMachineService } from '../app.statemachine';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, HttpClientModule, MatInputModule],
-  providers: [EmployeeService],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+  styleUrl: './login.css'
 })
+
+
 export class LoginComponent implements OnInit, AfterViewInit {
- loginForm!: FormGroup;
-  username: string = '';
-  password: string = '';
-  employeeData!: EmployeeService;
-
+  loginForm!: FormGroup;
   ACTION_Local = ACTION;
-  @Inject("stateMachineService") stateMachineService!: StateMachineService;
-  @Inject("router") router!: Router;
 
-  constructor(private httpClient: HttpClient, private employeeService: EmployeeService) {
-
-    this.httpClient = httpClient;
-
-    this.employeeData = new EmployeeService(httpClient);
-
-  }
-
-  ngOnInit() {
+  constructor( 
+    @Inject(StateMachineService) private stateMachineService: StateMachineService, 
+    @Inject(Router) private router: Router , 
+    @Inject(EmployeeService) private employeeService:EmployeeService)  {
     this.loginForm = new FormGroup({
-      userName: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      username: new FormControl('bsangam@yahoo.com', Validators.required),
+      password: new FormControl('jajdjakdjandjajs', Validators.required)
     });
-
-      console.log("Login Form Initialized: ", this.loginForm.value);
-
-
+    console.log("Login Form Initialized: ", this.loginForm.value);
   }
 
-   ngAfterViewInit(){
-    console.log("LoginComponent View Initialized");
-
-    //console.log("Current State: ", this.stateMachineService.getCurrentState());
-    this.stateMachineService.getCurrentState();
-
+  ngOnInit(): void {
+   
+  }
+  
+  ngAfterViewInit() {
     const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
     allActions.forEach(action => {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = true;
     })
-    console.log("All Actions Disabled");
     
     const pageActions:ACTION[] = this.stateMachineService.getPageActions();
+    console.log("pageActions = ", pageActions);
     pageActions.forEach( action => {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
     })
-    console.log("Page Actions Enabled");
   }
 
   go(event:any){
-    const url = '';
-    if (event.target.id === this.ACTION_Local.GO_LOGIN) {
-      this.loginEmployee();
-      console.log("Login button clicked");
-    }
-    if (url)this.router.navigateByUrl(url);
+  console.log("event.target.id " , event.target.id);
+  const url = this.stateMachineService.goNextState(event.target.id)
+  console.log("url " , url);
+  if (url)this.router.navigateByUrl(url);
   }
 
-  loginEmployee(){
-    this.employeeData.findAll().subscribe(employees => {
-     employees = this.employeeData.getById(1);
-     console.log("Employees fetched: ", employees);
-    });
-       const user = this.employeeData.getById(1);
-      if (this.loginForm.value.userName == "johndoe") {
+  submit(event:any){
+      if (this.loginForm.valid && this.employeeService.verifyUsernameAndPassword(this.loginForm.value.username, this.loginForm.value.password)) {
         console.log("Login Successful");
-        console.log(this.username + " logged in.");
-        this.router.navigateByUrl("employees");
+        console.log(this.loginForm.value.username + " logged in.");
+        this.go(event);
         console.log("Navigation successful");
       }
        else {
         console.log("Invalid credentials");
        }
-    }
+  }
 }
