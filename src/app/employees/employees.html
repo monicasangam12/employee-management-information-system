@@ -3,16 +3,9 @@
         <h1>Employees Details List</h1>
     </div>
     <article class="table-header">
-        <mat-button-toggle-group #employeeGroup="matButtonToggleGroup" (change)="onToggleChange()" style="margin-left: 19%;">
-            <mat-button-toggle style="color: aqua;" class="button-view-add" mat-button-toggle value="viewAdd" (click)="go($event)" checked>Add Row</mat-button-toggle>
-            <mat-button-toggle style="color: bisque;" class="button-view-editable" mat-button-toggle value="viewEditable" (click)="go($event)">Edit Row</mat-button-toggle>
-            <mat-button-toggle style="color: lightcoral;" class="button-view-deletable" mat-button-toggle value="viewDeletable" (click)="go($event)">Delete Row</mat-button-toggle>
-            <mat-button-toggle style="color: lightseagreen;" class="button-view-searchable" mat-button-toggle value="viewSearchable" (click)="go($event)">Search Row</mat-button-toggle>
-        </mat-button-toggle-group>
-        <button class="button-add-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_ADD}}">Add Row</button>
-        <button class="button-edit-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_EDIT}}">Edit Row</button>
-        <button class="button-delete-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_DELETE}}">Delete Row</button>
-        <button class="button-search-row" mat-button (click)="go($event)" id="{{ACTION_Local.GO_SEARCH}}">Search Row</button>
+        <button class="button-add-row"  id="{{ACTION_Local.GO_ADD}}" (click)="goParam($event, selection)">Add Row</button>
+        <button class="button-edit-row"  id="{{ACTION_Local.GO_EDIT}}" (click)="goParam($event,selection)">Edit Row</button>
+        <button class="button-delete-row"  id="{{ACTION_Local.SUBMIT_DELETE}}" (click)="goParam($event, selection)" >Delete Row</button>
     </article>
     <mat-form-field style="margin-left: 66%;">
         <mat-label>Filter</mat-label>
