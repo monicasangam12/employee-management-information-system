@@ -12,9 +12,9 @@ import { MatButtonModule } from "@angular/material/button";
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AppFilterPipe } from '../../filter.pipe';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ACTION, StateMachineService } from '../app.statemachine';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 const COLUMNS_SCHEMA = [
@@ -66,25 +66,15 @@ const COLUMNS_SCHEMA = [
 
 ];
 
-export enum FORM_MODE {
-      Register = 0,
-      Add = 1,
-      Edit = 2,
-      Delete = 3
-}
-
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [CommonModule, MatInputModule, MatTableModule, MatPaginatorModule,
-     MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, 
-     FormsModule, HttpClientModule, MatSortModule, MatButtonToggleModule],
+  imports: [CommonModule, MatInputModule, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, FormsModule, HttpClientModule, MatSortModule],
   providers: [EmployeeService],
   templateUrl: './employees.html',
   styleUrl: './employees.css'
 })
 export class EmployeesComponent {
-
 // appFilter.transform(this.employees, "vi", "name");
 
   //Table Definition
@@ -101,26 +91,23 @@ export class EmployeesComponent {
   //sorting data for table
   @ViewChild(MatSort)sort: MatSort = new MatSort;
 
-  formModeEnum = FORM_MODE;
   searchText!: string;
   employees: Employee[] = [];
-  //appFilter: AppFilterPipe = new AppFilterPipe;
-
-  formMode!: FORM_MODE;
-  event!: EventEmitter<Employee>;
+  appFilter: AppFilterPipe = new AppFilterPipe;
 
   filterPosition: any;
   ACTION_Local = ACTION;
 
-  //Lifecycle Event
 
   constructor(private employeeService: EmployeeService, private router: Router,
     private stateMachineService: StateMachineService
   )  {
+    console.log("stateMachineService.currentMachineStep = " , stateMachineService.currentMachineStep)
     this.refreshTable();
   }
 
   ngOnInit() {
+    this.dataSource.sort = this.sort;
 
      this.dataSource.filterPredicate = (data: Employee, filter: string) => {
       return data.name.toLowerCase().includes(filter);
@@ -135,9 +122,13 @@ export class EmployeesComponent {
       return data.name.toLowerCase().includes(filter);
      }
 
-     let employeeId = this.stateMachineService.getCurrentState();
-     console.log("Current State: ", employeeId);
+     this.updateButtonState()
      
+
+
+  }
+
+  updateButtonState() {
    const allActions:(string|ACTION)[] = this.stateMachineService.getAllActions();
     allActions.forEach(action => {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
@@ -145,16 +136,69 @@ export class EmployeesComponent {
     })
     
     const pageActions:ACTION[] = this.stateMachineService.getPageActions();
+    console.log(" currentState = " , this.stateMachineService.getCurrentState());
+    console.log(" pageActions = " , pageActions)
     pageActions.forEach( action => {
       if((document.getElementById(''+action) as HTMLButtonElement)!=null)
         (document.getElementById(''+action) as HTMLButtonElement).disabled = false;
     })
-
   }
+
+  go(event:any, param:number){
+    console.log("event.target.id " , event.target.id);
+    const url = this.stateMachineService.goNextState(event.target.id)
+    console.log("url " , url);
+    if (url)this.router.navigateByUrl(url);
+  }
+
+  goParam(event:any, selectionPassed:SelectionModel<Employee>){
+    //const url = this.stateMachineService.goNextState(event.target.id)
+    console.log("event.target.id ", event.target.id);
+    console.log("goParam ", event.target.id)
+    if(event.target.id==this.ACTION_Local.GO_ADD){
+      //this.router.navigateByUrl('/add-employee/');
+      console.log("try add")
+      this.go(event, (selectionPassed.selected[0]===undefined?0:selectionPassed.selected[0].id))
+      console.log("Add Row");
+    }
+    else if(event.target.id==this.ACTION_Local.GO_EDIT){
+      console.log("Edit an employee id from employee table:  ", selectionPassed.selected[0]);
+      if(selectionPassed.selected.length>0){
+        console.log("Selected Employee for Edit:", selectionPassed.selected[0]);
+        //this.router.navigateByUrl('/add-employee/'+ selectionPassed.selected[0].id);
+        this.go(event, (selectionPassed.selected[0]===undefined?0:selectionPassed.selected[0].id))
+      }
+      else
+        console.log("no selection");
+    }
+    else if(event.target.id==this.ACTION_Local.SUBMIT_DELETE){
+      if(selectionPassed.selected.length>0){
+        console.log("Deleted an employee id from employee table:  ", selectionPassed.selected[0].id);
+
+        this.employeeService.delete(selectionPassed.selected[0].id).subscribe({
+          next: (response: Boolean) => {
+            console.log(response);
+            console.log("Employee registered successfully", response);
+            this.refreshTable();
+          },
+          error: (error: string) => {
+            console.log(error);
+            console.error("Error during registration", error);
+          }
+        })
+        this.go(event, (selectionPassed.selected[0].id===undefined?0:selectionPassed.selected[0].id));
+      }
+      else
+        console.log("no selection")
+    }
+  }
+
 
   refreshTable() {
     this.employeeService.findAll().subscribe((data: Employee[]) => {
+      this.refreshSelection(data);
       this.dataSource.data = data;
+
       console.log("Fetched Employees Data:", this.dataSource.data);
       this.dataSource.paginator = this.paginator; 
     });
@@ -168,16 +212,28 @@ export class EmployeesComponent {
     // appFilter.transform(this.employees, "vi", "name");
   }
 
-  applyFilter(event: Event){
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource.filter);
-    console.log(filterValue);
+  filterEmployeeByPosition() {
+    this.appFilter.transform(this.employees, this.filterPosition, "position");
+    console.log("Filtered Employees by Position:", this.dataSource.data);
+    return this.dataSource;
   }
 
   //Event Handlers
 
   checkedOrUnchecked(row: Employee) {
+    let action = this.ACTION_Local.SUBMIT_SELECT;
+
+    if(this.selection.isSelected(row)) {
+        row.isEdit = false;
+        action = this.ACTION_Local.SUBMIT_UNSELECT;
+    }
+    else {
+        row.isEdit = true;
+        action = this.ACTION_Local.SUBMIT_SELECT;
+    }
+
+    this.stateMachineService.goNextState(action);
+
     if (row && row.isEdit === true) {
        this.selection.toggle(row);
        console.log("Unchecked Rows:", this.selection.selected);
@@ -185,78 +241,62 @@ export class EmployeesComponent {
       this.selection.toggle(row);
       console.log("Checked Rows:", this.selection.selected);
     }
+
+    this.saveSessionSelection()
+    //refresh the page to refresh button
+    this.updateButtonState()
   }
 
-   go(event:any){
-    const url = this.stateMachineService.getNextState(event.target.id)
-    console.log("Navigating to URL:", "employees");
-    if (url == "search-employee-skills")
-           this.searchEmployeeByText();
-    else if (url == "delete/${id}")
-      this.deleteRowButtonHandler(this.formModeEnum.Delete);
-    else if (url == "edit/${id}")
-      this.editRowButtonHandler(this.formModeEnum.Edit);
-    else if (url == "add-employee/{id}")
-      this.router.navigateByUrl(url);
-      console.log("Navigating to URL:", "add-employee");
-
-    if (url)this.router.navigateByUrl("add-employee");
-   }
-
-  onToggleChange() {
-    const selectedValue = this.employees;
-    console.log("Selected View Mode:", selectedValue);
-   if (selectedValue) {
-      viewAddMode: this.dataSource.data = this.employees.filter(emp => emp.username.length >= 4);
-      console.log("Filtered Employees with username length >=4:", this.dataSource.data);
-    } else {
-      viewAllMode: this.refreshTable();
-      console.log("All Employees View Mode:", this.dataSource.data);
-    }
+  refreshData(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
-  addRowButtonHandler(formMode:FORM_MODE){
-      if(formMode==FORM_MODE.Add){
-        this.router.navigateByUrl('/add-employee/');
-        console.log("Add Row");
+  applyFilter(event: Event){
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource.filter);
+    console.log(filterValue);
+  }
+
+  restoreSessionSelection() {
+     let ids: number []  = [];
+    let selectionModelJson = sessionStorage.getItem("selectionModel");
+    console.log("sessionStorage.getItem(selectionModel) = ", selectionModelJson);
+    if(selectionModelJson!=null)
+      ids = JSON.parse(selectionModelJson);
+    return ids;
+  }
+
+  saveSessionSelection() {
+    let ids: number []  = [];
+    this.selection.selected.forEach(element=> {
+      ids.push(element.id)
+    })
+
+    console.log("JSON.stringify(this.selection) = ", JSON.stringify(ids))
+    sessionStorage.setItem("selectionModel", JSON.stringify(ids));
+  }
+
+  refreshSelection(data :any[]) {
+    let ids: number []  = [];
+    ids = this.restoreSessionSelection();
+
+    let index = 0;
+    let maxIndex = ids.length;
+    console.log("maxIndex = ", maxIndex)
+    console.log("refreshSelection:ids = ", ids)
+    data.forEach(element=> {
+      if(index < maxIndex  && ids[index]==element.id) {
+        console.log("index = ", index, " ids[index] = ", ids[index])
+        element.isEdit = true;
+        index++
       }
+      else  
+        element.isEdit = false
+    })
   }
-
-
-  editRowButtonHandler(formMode:FORM_MODE){
-          if(formMode==FORM_MODE.Edit){
-          console.log("Edit an employee id from employee table:  ", this.selection.selected[0]);
-          if(this.selection.selected.length>0){
-            console.log("Selected Employee for Edit:", this.selection.selected[0]);
-            this.router.navigateByUrl('/add-employee/'+this.selection.selected[0].id);
-          }
-          else
-            console.log("no selection");
-      }
-  }
-
-  deleteRowButtonHandler(formMode:FORM_MODE){
-     if(formMode==FORM_MODE.Delete) {
-      if(this.selection.selected.length>0){
-        console.log("Deleted an employee id from employee table:  ", this.selection.selected[0].id);
-
-        this.employeeService.delete(this.selection.selected[0].id).subscribe({
-          next: (response: Boolean) => {
-            console.log(response);
-            console.log("Employee registered successfully", response);
-            this.refreshTable();
-          },
-          error: (error: string) => {
-            console.log(error);
-            console.error("Error during registration", error);
-          }
-        })
-
-      }
-      else
-        console.log("no selection")
-    }
-  }
-
 }
       
