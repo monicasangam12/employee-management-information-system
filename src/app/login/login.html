@@ -5,7 +5,7 @@
     <form method="post" [formGroup]="loginForm">
         <mat-form-field style="margin-left: 19%;">
             <mat-label>UserName</mat-label>
-            <input matInput type="text" formControlName="userName">
+            <input matInput type="text" formControlName="username" >
         </mat-form-field>
         <br>
         <br>
@@ -15,7 +15,7 @@
         </mat-form-field>
         <br>
         <br>
-        <!-- <button id="{{ACTION_Local.GO_LOGIN}}" matButton (click)="go($event)" type="submit">Login</button> -->
-        <button style="margin-left: 25%;" matButton (click)="loginEmployee()" type="submit">Login</button>
+
+        <button style="margin-left: 25%;" matButton id="{{ACTION_Local.SUBMIT_LOGIN}}" (click)="submit($event)" type="submit">Login</button>
     </form>
 </div>
