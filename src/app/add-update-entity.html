@@ -1,0 +1,73 @@
+ <base href="/"> 
+<html>
+    <div>
+        <h1 style="margin-left: 25%;">Add {{capitalizeFirstLetter(entityName)}}</h1>
+        <br>
+        <br>
+        @if(!loading) {
+            <form method="post" [formGroup]="entityForm">
+                @for(key of getEntityObjectKeys(entityObject); track key) {
+                    @if(this.entityObject.hasOwnProperty(key) ) {
+                        @switch (true) {
+
+                            <!-- Foriegn Key-->
+                             @case (matchesRegexExtID(key)) {
+                                <mat-form-field  [ngStyle]="{ display: showField ? 'block' : 'none' }" style="margin-left: 25%;">
+                                    <mat-label>{{key}}</mat-label>
+                                    <input matInput  id="{{key}}" type="text" formControlName="{{key}}">
+                                </mat-form-field>
+                                <!--Foriegn key description make it drop down-->
+                                <mat-form-field style="margin-left: 25%;">
+                                    <mat-label>{{idPrefix(key)}}</mat-label>
+                                    
+                                    <mat-select>
+                                        <mat-option value="-1">New</mat-option>
+                                        @for(value of getJSONArray(entityForm.controls[key].value); track value.id){
+                                            <mat-option value={{value.id}}>{{value.description}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                                <button style="margin-right: 25%;" id="{{ACTION.GO_MAP}}" (click)="go($event)" type="submit">Map</button>
+                            }
+
+                            <!-- Primary Key-->
+                            @case (matchesRegexID(key)) {
+                                <mat-form-field  [ngStyle]="{ display: showField ? 'block' : 'none' }" style="margin-left: 25%;">
+                                    <mat-label>{{key}}</mat-label>
+                                    <input matInput   id="{{key}}" type="text" formControlName="{{key}}">
+                                </mat-form-field>
+                            }
+
+                            <!-- Edit Flag-->
+                            @case (matchesColumnEdit(key)) {
+                                <mat-form-field [ngStyle]="{ display: showField ? 'block' : 'none' }" style="margin-left: 25%;">
+                                    <mat-label>{{key}}</mat-label>
+                                    <input matInput   id="{{key}}" type="text" formControlName="{{key}}">
+                                </mat-form-field>
+                            }
+                            @default {
+                                <mat-form-field style="margin-left: 25%;">
+                                    <mat-label>{{key}}</mat-label>
+                                    <input matInput id="{{key}}" type="text" formControlName="{{key}}">
+                                </mat-form-field>
+                            }
+                        }
+                    }
+                }  
+
+                @if (entityId==-1) {
+                    <button style="margin-left: 25%;" id="{{ACTION.SUBMIT_REGISTER}}" (click)="submitRegister($event)" type="submit">Register</button>
+                }@else{
+                    @if (entityId==0) {
+                        <button style="margin-left: 25%;" id="{{ACTION.SUBMIT_ADD}}" (click)="submitAdd($event)" type="submit">Add</button>
+                    }@else{
+                        <button style="margin-left: 25%;" id="{{ACTION.SUBMIT_EDIT}}" (click)="submitEdit($event)" type="submit">Edit</button>
+                    }
+                }
+                <br><br>
+        </form>
+        }
+    </div>
+</html>
+

@@ -1,22 +1,25 @@
-import { CommonModule } from '@angular/common';
-import { Component, Injectable } from '@angular/core';
+import { Component, Inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Navbar } from "./navbar/navbar";
+import { Navbar } from './navbar/navbar';
+import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
-import { HttpClientModule } from '@angular/common/http';
+import { LeftNav } from "./left-nav/left-nav";
+import { DataService } from "./app.dataservice";
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, Navbar, MatSortModule, HttpClientModule],
- templateUrl: './app.html',
+  imports: [RouterOutlet, CommonModule, RouterOutlet, Navbar, MatSortModule, LeftNav],
+  templateUrl: './app.html',
   styleUrl: './app.css'
 })
-
-@Injectable({
-  providedIn: 'root'
-})
-
 export class App {
-  protected title = 'employee-management-applica';
-   
+  protected readonly title = signal('Entity');
+  entityName!:string;
+
+  constructor(@Inject(DataService) private dataService: DataService ){   
+    this.dataService.changeMessage(JSON.stringify({entityName:this.entityName}));
+  }
+
+  
+
 }

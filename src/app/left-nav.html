@@ -1,0 +1,10 @@
+  <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style" 
+   [formControl]="entityNameControl"
+   [hideSingleSelectionIndicator]="entitySelection()">
+    <mat-button-toggle value="employee">Employee</mat-button-toggle>
+    <mat-button-toggle value="user">User</mat-button-toggle>
+    <mat-button-toggle value="profile">Profile</mat-button-toggle>
+    <mat-button-toggle value="role">Role</mat-button-toggle>
+    <mat-button-toggle value="feature">Feature</mat-button-toggle>
+  </mat-button-toggle-group>
+ <p>Chosen value is {{entityNameControl.value}}</p>

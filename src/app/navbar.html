@@ -1,0 +1,31 @@
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="go($event)" aria-label="Example icon-button with a menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="first-button-spacer"></span>
+  <button mat-icon-button id="{{ACTION.MENU_GO_HOME}}" (click)="go($event)" class="fa fa-home" >
+  </button>
+
+  <span class="second-group-button-spacer"></span>
+  <button mat-icon-button id="{{ACTION.MENU_GO_REGISTER}}" (click)="go($event)" class="fa fa-fw fa-user-plus" >
+  </button>
+
+  <span class="button-spacer"></span>
+  <button mat-icon-button id="{{ACTION.MENU_GO_LOGIN}}" (click)="go($event)" class="fa fa-fw fa-user" >
+  </button>
+
+  <span class="button-spacer"></span>
+  <button mat-icon-button id="{{ACTION.MENU_GO_DASHBOARD}}" (click)="go($event)" class="fa fa-users" >
+  </button>
+
+  <span class="button-spacer"></span>
+  <span class="center-title-space" >Profile Management System</span>
+
+  <span class="right-aligned-group-button-spacer"></span>
+  <button mat-icon-button id="{{ACTION.MENU_SUBMIT_LOGOUT}}" (click)="go($event)" class="fa fa-users" >
+  </button>
+</mat-toolbar>

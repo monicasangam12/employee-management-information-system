@@ -1,0 +1,34 @@
+<html>
+    <div>
+        <h1>Entitys Details List</h1>
+    </div>
+    <article class="table-header">
+        <button class="button-add-row"  id="{{ACTION.GO_ADD}}" (click)="goParam($event, selection)">Add Row</button>
+        <button class="button-edit-row"  id="{{ACTION.GO_EDIT}}" (click)="goParam($event,selection)">Edit Row</button>
+        <button class="button-delete-row"  id="{{ACTION.SUBMIT_DELETE}}" (click)="goParam($event, selection)" >Delete Row</button>
+    </article>
+    <mat-form-field style="margin-left: 66%;">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. John" #input>
+    </mat-form-field>
+   <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns;index as i">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span *ngIf="displayedColumnsKey[i] != 'id'">
+                {{displayedColumns[i]}}
+            </span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <div *ngIf="displayedColumnsKey[i] == 'isEdit'">
+                <input type="checkbox" [checked]="element[displayedColumnsKey[i]]"  (click)="selectUnselect(element)" />
+            </div>
+            <div *ngIf="displayedColumnsKey[i] != 'id' && displayedColumnsKey[i] != 'isEdit'">
+                {{element[displayedColumnsKey[i]]}}
+            </div>
+        </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</html>
