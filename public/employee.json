@@ -1,0 +1,53 @@
+{
+    "id": {
+                "value":"1", "dataType":"id", "order":"0",
+                "formLabel":"ID","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"ID","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":false
+    }, 
+    "name": {
+                "value":"name", "dataType":"string", "order":"2",
+                "formLabel":"Name","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Name","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "email": {
+                "value":"email1@company.com", "dataType":"email", "order":"4",
+                "formLabel":"Email","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Email","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "position": {
+                "value":"position", "dataType":"string", "order":"3",
+                "formLabel":"Position","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Position","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "salary": {
+                "value":"1000000", "dataType":"number", "order":"5",
+                "formLabel":"Salary","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10000000,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Salary","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "isEdit": {
+                "value":"true", "dataType":"boolean", "order":"1",
+                "formLabel":"Select","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Select","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "rating": {
+                "value":"2", "dataType":"number", "order":"6",
+                "formLabel":"Rating","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Rating","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "password": {
+                "value":"password1", "dataType":"password", "order":"8",
+                "formLabel":"Password","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Password","dataFormat":"password", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "username": {
+                "value":"username1", "dataType":"string", "order":"7",
+                "formLabel":"Username","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Username","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "role_id": {
+                "value":"1", "dataType":"number", "order":"9",
+                "formLabel":"Role","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"role","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }
+
+}

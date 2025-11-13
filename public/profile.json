@@ -1,0 +1,57 @@
+{
+    "id": {
+                "value":"1", "dataType":"id", "order":"0",
+                "formLabel":"ID","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"ID","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":false
+    }, 
+    "firstName": {
+                "value":"firstName", "dataType":"string", "order":"1",
+                "formLabel":"First Name","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"First Name","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "lastName": {
+                "value":"lastName", "dataType":"string", "order":"2",
+                "formLabel":"Last Name","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Last Name","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "addressLine1": {
+                "value":"addressLine1", "dataType":"string", "order":"3",
+                "formLabel":"Address Line1","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Address Line1","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "addressLine2": {
+                "value":"addressLine2", "dataType":"string", "order":"4",
+                "formLabel":"Address Line2","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10000000,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Address Line2","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "city": {
+                "value":"city", "dataType":"string", "order":"5",
+                "formLabel":"City","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"City","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "state": {
+                "value":"state", "dataType":"string", "order":"6",
+                "formLabel":"State","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"State","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "zipCode": {
+                "value":"zip", "dataType":"string", "order":"7",
+                "formLabel":"Zip Code","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Zip Code","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "country": {
+                "value":"country", "dataType":"string", "order":"8",
+                "formLabel":"Country","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Country","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "userMapping": {
+                "value":"[{\"id\":\"1\",\"description\":\"user1\"},{\"id\":\"2\",\"description\":\"user2\"}]", "dataType":"string", "order":"8",
+                "formLabel":"userMapping","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"userMapping","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "roleMapping": {
+                "value":"[{\"id\":\"1\",\"description\":\"role1\"},{\"id\":\"2\",\"description\":\"role2\"}]","dataType":"string", "order":"8",
+                "formLabel":"roleMapping","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":10,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"roleMapping","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "id": {
+                "value":"1", "dataType":"id", "order":"0",
+                "formLabel":"ID","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"ID","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":false
+    }, 
+    "email": {
+                "value":"email1@company.com", "dataType":"email", "order":"1",
+                "formLabel":"Email","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Email","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "phoneNumber": {
+                "value":"123-456-7890", "dataType":"phone", "order":"2",
+                "formLabel":"PhoneNumber","formRequired":false,"formMinLength":"0","formMaxLength":"10","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"PhoneNumber","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    },
+    "username": {
+                "value":"username1", "dataType":"string", "order":"3",
+                "formLabel":"Username","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Username","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }, 
+    "password": {
+                "value":"password1", "dataType":"password", "order":"4",
+                "formLabel":"Password","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Password","dataFormat":"password", "columnLength":10,"columnSort":true, "columnDisplay":true
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "id": {
+                "value":"1", "dataType":"id", "order":"0",
+                "formLabel":"ID","formRequired":false,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"ID","dataFormat":"string", "columnLength":10,"columnSort":true, "columnDisplay":false
+    }, 
+    "description": {
+                "value":"description", "dataType":"string", "order":"1",
+                "formLabel":"Description","formRequired":true,"formMinLength":"0","formMaxLength":"25","formMinValue":0,"formMaxValue":0,"formValues":{},"formValidatorFunctions":"testValidatorFunction","formValidatorFunctionsParam":"/bob/i","formPattern":"","formSegmentName":"",
+                "columnName":"Description","dataFormat":"string", "columnLength":25,"columnSort":true, "columnDisplay":true
+    }
+}
